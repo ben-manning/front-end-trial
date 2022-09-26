@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [posts, updatePosts] = useState([]);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}`);
+      updatePosts(response.data);
+    };
+
+    getPosts();
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {posts.map((post) => (
+        <div key={post._id}>{post.title}</div>
+      ))}
     </div>
   );
 }
